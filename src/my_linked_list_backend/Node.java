@@ -1,6 +1,8 @@
-package list;
+package my_linked_list_backend;
 
-public class Node<E> {
+import java.io.Serializable;
+
+public class Node<E> implements Serializable {
     public E data;
     public Node<E> next;
 

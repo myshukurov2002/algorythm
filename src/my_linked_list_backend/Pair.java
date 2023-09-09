@@ -1,4 +1,4 @@
-package list;
+package my_linked_list_backend;
 
 public class Pair<A, B> {
     private A first;

@@ -1,4 +1,6 @@
-package list;
+package my_linked_list_backend;
+
+import java.io.*;
 
 public class ListNode<E> {
     private Node<E> head;
@@ -168,14 +170,14 @@ public class ListNode<E> {
         head = prev;
     }
 
-    public E getMiddle() {
-        Node<E> fast = head;
-        Node<E> slow = head;
-        while (fast.next != null) {
-            fast = fast.next.next;
+    private Node findMiddle(Node head) {
+        Node slow = head;
+        Node fast = head;
+        while (fast.next != null && fast.next.next != null) {
             slow = slow.next;
+            fast = fast.next.next;
         }
-        return slow.data;
+        return slow;
     }
 
     @Override
@@ -226,21 +228,60 @@ public class ListNode<E> {
         return new Pair<>(this, new ListNode<>(slow));
     }
 
-    public void sort(ListNode<Integer> listNode) {
-        if (listNode.isEmpty() || size == 1) {
-            return;
+    public Node<Integer> sort(Node node) {
+        if (node == null || node.next == null) {
+            return node;
         }
-        ListNode<Integer> newList = new ListNode<>();
-//        int min = listNode.get(0);
-        for (int i = 1; i < listNode.size; i++) {
-            for (int j = i + 1; j < listNode.size; j++) {
-                if (listNode.get(i) > listNode.get(j)) {
-                    listNode.swap(i, j);
-                }
-            }
-        }
+        Node<E> middle = findMiddle(node);
+        Node<E> left =  node;
+        Node<E> right = middle.next;
+        middle.next = null;
+        Node<Integer> sortedLeft = sort(left);
+        Node<Integer> sortedRight = sort(right);
+        return merge(sortedLeft, sortedRight);
+
+//        return merge(sortedLeft, sortedRight);
     }
 
+    private Node<Integer> merge(Node l, Node r) {
+
+        Node<Integer> dummy = new Node(-1);
+        Node<Integer> current = dummy;
+        Node<Integer> left = (Node<Integer>) l;
+        Node<Integer> right = (Node<Integer>) r;
+
+        while (left != null && right != null) {
+            if (left.data < right.data) {
+                current.next = left;
+                left = left.next;
+            } else {
+                current.next = right;
+                right = right.next;
+            }
+            current = current.next;
+        }
+
+        if (left != null) {
+            current.next = left;
+        }
+        if (right != null) {
+            current.next = right;
+        }
+        return dummy.next;
+    }
+
+    public String serializable(Node node) {
+        try(FileOutputStream file = new FileOutputStream("write_node.txt");
+            ObjectOutputStream out = new ObjectOutputStream(file);) {
+
+            Node current = node;
+
+            out.writeObject(node);
+            return "SUCCESS";
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public void replace(int index, E data) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("ITEM NOT FOUND AT THiS INDEX !!!");
@@ -277,6 +318,36 @@ public class ListNode<E> {
             node_B.data = tempData;
         } else {
             swap(index_B, index_A);
+        }
+    }
+
+    public static int[] toArray(Node head) {
+        Node node = head;
+        int size = 0;
+        while (node != null) {
+            size++;
+            node = node.next;
+        }
+        node = head;
+        int [] arr = new int[size];
+        int i = 0;
+        while (node != null) {
+            arr[i] = (int) node.data;
+            node = node.next;
+            i++;
+        }
+        return arr;
+    }
+
+    public Node deserializable(String fileName) {
+        try {
+            FileInputStream file = new FileInputStream(fileName);
+            ObjectInputStream in = new ObjectInputStream(file);
+            Node node = (Node) in.readObject();
+
+            return node;
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 }

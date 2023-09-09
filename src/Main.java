@@ -1,6 +1,6 @@
-import list.ListNode;
-import list.Node;
-import list.Pair;
+import my_linked_list_backend.ListNode;
+import my_linked_list_backend.Node;
+import my_linked_list_backend.Pair;
 
 public class Main {
     public static void main(String[] args) {
@@ -47,26 +47,54 @@ public class Main {
 
         ListNode listNode = new ListNode();
 //        System.out.println("listNode.getFirst() = " + listNode.getFirst());
-        listNode.add(1);
-        listNode.add(2);
-        listNode.add(3);
-        listNode.add(4);
-        listNode.add(5);
-        listNode.add(6);
-        listNode.add(7);
-        listNode.add(8);
-        listNode.add(9);
+//        listNode.add(1);
+//        listNode.add(2);
+//        listNode.add(3);
+//        listNode.add(4);
+//        listNode.add(5);
+//        listNode.add(6);
+//        listNode.add(7);
+//        listNode.add(8);
+//        listNode.add(9);
+
+
+        //sort and merge
+        Node node = new Node(9);
+        node.next = new Node(3);
+        node.next.next = new Node(0);
+        node.next.next.next = new Node(2);
+        node.next.next.next.next = new Node(7);
+        node.next.next.next.next.next = new Node(6);
+        node.next.next.next.next.next.next = new Node(3);
+        node.next.next.next.next.next.next.next = new Node(0);
+//        ListNode list = new ListNode();
+////        Node sort = list.sort(node);
+//        int [] arr = toArray(node);
+////        System.out.println(sort);
+//        for (int i : arr) {
+//            System.out.println(i);
+//        }
+
+        //implement iterator
+//        ListNodeIterator listNodeIterator = new ListNodeIterator(node);
+//        while (listNodeIterator.hasNext()) {
+//                System.out.println(listNodeIterator.current.data);
+//                listNodeIterator.next();
+//        }
+
+        // serializable
+        System.out.println("listNode.writeToFile(node) = " + listNode.serializable(node));
+        // deserializable
+        System.out.println("listNode.deserializable(\"write_node.txt\") = " + listNode.deserializable("write_node.txt"));
 //        listNode.replace(4, 0);
 //        listNode.swap(0, 8);
-        System.out.println("listNode = " + listNode);
+//        li
+//        System.out.println("listNode = " + listNode);
 //        System.out.println("listNode.getMiddle() = " + listNode.getMiddle());
-
 
 
 //        detectCycle(); // detecting has cycle
 //        splitLinkedList();
-
-
 
 
 //        listNode.reverse4();
@@ -102,11 +130,11 @@ public class Main {
     }
 
     private static void detectCycle() {
-        Node<Integer>  node1 = new Node(1);
-        Node<Integer>  node2 = new Node(2);
-        Node<Integer>  node3 = new Node(3);
-        Node<Integer>  node4 = new Node(4);
-        Node<Integer>  node5 = new Node(5);
+        Node<Integer> node1 = new Node(1);
+        Node<Integer> node2 = new Node(2);
+        Node<Integer> node3 = new Node(3);
+        Node<Integer> node4 = new Node(4);
+        Node<Integer> node5 = new Node(5);
 
         node1.next = node2;
         node2.next = node3;
